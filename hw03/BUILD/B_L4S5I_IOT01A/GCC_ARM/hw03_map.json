@@ -2,10 +2,10 @@
     {
         "module": "../..",
         "size": {
-            ".text": 34960,
+            ".text": 37610,
             ".data": 444,
             ".bss": 8022,
-            ".text-delta": 0,
+            ".text-delta": 2650,
             ".data-delta": 0,
             ".bss-delta": 0
         }
@@ -13,32 +13,32 @@
     {
         "module": "BUILD/B_L4S5I_IOT01A",
         "size": {
-            ".text": 1314,
-            ".data": 16,
-            ".bss": 1292,
-            ".text-delta": -12,
-            ".data-delta": 0,
-            ".bss-delta": 0
+            ".text": 27594,
+            ".data": 305,
+            ".bss": 66062,
+            ".text-delta": 26280,
+            ".data-delta": 289,
+            ".bss-delta": 64770
         }
     },
     {
         "module": "[fill]",
         "size": {
-            ".text": 106,
-            ".data": 8,
-            ".bss": 33,
-            ".text-delta": -52,
-            ".data-delta": 0,
-            ".bss-delta": 0
+            ".text": 236,
+            ".data": 14,
+            ".bss": 31,
+            ".text-delta": 130,
+            ".data-delta": 6,
+            ".bss-delta": -2
         }
     },
     {
         "module": "[lib]/c.a",
         "size": {
-            ".text": 32284,
+            ".text": 35992,
             ".data": 2472,
             ".bss": 89,
-            ".text-delta": 0,
+            ".text-delta": 3708,
             ".data-delta": 0,
             ".bss-delta": 0
         }
@@ -46,11 +46,22 @@
     {
         "module": "[lib]/gcc.a",
         "size": {
-            ".text": 3264,
+            ".text": 3596,
             ".data": 0,
             ".bss": 0,
-            ".text-delta": 0,
+            ".text-delta": 332,
             ".data-delta": 0,
+            ".bss-delta": 0
+        }
+    },
+    {
+        "module": "[lib]/m.a",
+        "size": {
+            ".text": 2552,
+            ".data": 1,
+            ".bss": 0,
+            ".text-delta": 2552,
+            ".data-delta": 1,
             ".bss-delta": 0
         }
     },
@@ -66,11 +77,33 @@
         }
     },
     {
+        "module": "[lib]/nosys.a",
+        "size": {
+            ".text": 32,
+            ".data": 0,
+            ".bss": 0,
+            ".text-delta": 32,
+            ".data-delta": 0,
+            ".bss-delta": 0
+        }
+    },
+    {
+        "module": "[lib]/stdc++.a",
+        "size": {
+            ".text": 40,
+            ".data": 0,
+            ".bss": 16,
+            ".text-delta": 40,
+            ".data-delta": 0,
+            ".bss-delta": 16
+        }
+    },
+    {
         "summary": {
-            "static_ram": 12408,
-            "static_ram_delta": 0,
-            "total_flash": 75052,
-            "total_flash_delta": -64
+            "static_ram": 77488,
+            "static_ram_delta": 65080,
+            "total_flash": 111072,
+            "total_flash_delta": 36020
         }
     }
 ]
