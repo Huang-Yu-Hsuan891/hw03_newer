@@ -17,6 +17,7 @@
 #include "tensorflow/lite/version.h"
 
 #include "stm32l475e_iot01_accelero.h"
+//#​include <math.h>
 
 WiFiInterface *wifi;
 InterruptIn btn2(USER_BUTTON);
@@ -26,7 +27,7 @@ volatile bool closed = false;
 const char* topic = "Mbed";
 DigitalOut led1(LED1);  // gesture_UI
 DigitalOut led2(LED2);  // tiltangle
-
+DigitalOut led3(LED3);
 
 Thread mqtt_thread(osPriorityHigh);
 EventQueue mqtt_queue;
@@ -46,10 +47,10 @@ void tiltangle(Arguments *in, Reply *out);
 RPCFunction rpcLED(&tiltangle, "tiltangle");
 
 int set_confirm = 1;
-
 int gesture_index;
 int select_angle;
-
+int mode = 0;
+int success_ang; // bigger than angle
 //uLCD
 void print(int gesture_index) {
     uLCD.cls();
@@ -68,6 +69,18 @@ void print(int gesture_index) {
     else uLCD.printf("\nline\n");
 }
 
+void print1(int success_ang) {
+    uLCD.cls();
+    uLCD.background_color(WHITE);
+    uLCD.color(BLUE);
+    uLCD.text_width(2); //4X size text
+    uLCD.text_height(2);
+    uLCD.textbackground_color(WHITE);
+    if (success_ang == 1)
+     uLCD.printf("\nbigger than selected threshold angle\n");
+    else
+    uLCD.printf("\nsmaller than selected threshold angle\n");
+}
 void messageArrived(MQTT::MessageData& md) {
     MQTT::Message &message = md.message;
     char msg[300];
@@ -147,6 +160,7 @@ void detectges() {
   bool got_data = false;
   //int gesture_index;
   led1 = !led1;
+  mode = 0;
   static tflite::MicroErrorReporter micro_error_reporter;
   tflite::ErrorReporter* error_reporter = &micro_error_reporter;
 
@@ -229,9 +243,48 @@ void detectges() {
 
 void detectang() {
   led2 = !led2;
-  //printf("test\n\r");
-  int16_t pDataXYZ[3] = {0};
+  mode = 1;
+  int i;
+  int16_t pDataXYZ[3] = {0};  // for initialize
+  float cosangle;
+  float long1;
+  float long2;
+  float cos_select;
+  if (select_angle = 30) cos_select = 0.866;
+  else if (select_angle = 45) cos_select = 0.707;
+  else if (select_angle = 60) cos_select = 0.5;
+  else cos_select = 0.5;
+
   BSP_ACCELERO_AccGetXYZ(pDataXYZ);
+  printf("initial Accelerometer values: (%d, %d, %d)", pDataXYZ[0], pDataXYZ[1], pDataXYZ[2]);
+  ThisThread::sleep_for(1000ms);
+  int16_t pDataXYZ1[3] = {0};
+  /*for (i = 0; i < 10; i++) {
+    BSP_ACCELERO_AccGetXYZ(pDataXYZ1);
+    printf("detect Accelerometer values: (%d, %d, %d)\r\n", pDataXYZ1[0], pDataXYZ1[1], pDataXYZ1[2]);
+    long1 = sqrt(pDataXYZ[0] * pDataXYZ[0] + pDataXYZ[1] * pDataXYZ[1] + pDataXYZ[2] * pDataXYZ[2]);
+    long2 = sqrt(pDataXYZ1[0] * pDataXYZ1[0] + pDataXYZ1[1] * pDataXYZ1[1] + pDataXYZ1[2] * pDataXYZ1[2]);
+    cosangle = (pDataXYZ[0] * pDataXYZ1[0] + pDataXYZ[1] * pDataXYZ1[1] + pDataXYZ[2] * pDataXYZ1[2]) / (long1 * long2);
+    if (cosangle < cos_select) success_ang = 1;
+    else success_ang = 0; 
+    printf("success_ang = %d\r\n", success_ang);
+    print1(success_ang);
+    ThisThread::sleep_for(1000ms);
+  } */
+  while(1) {
+    BSP_ACCELERO_AccGetXYZ(pDataXYZ1);
+    printf("detect Accelerometer values: (%d, %d, %d)\r\n", pDataXYZ1[0], pDataXYZ1[1], pDataXYZ1[2]);
+    long1 = sqrt(pDataXYZ[0] * pDataXYZ[0] + pDataXYZ[1] * pDataXYZ[1] + pDataXYZ[2] * pDataXYZ[2]);
+    long2 = sqrt(pDataXYZ1[0] * pDataXYZ1[0] + pDataXYZ1[1] * pDataXYZ1[1] + pDataXYZ1[2] * pDataXYZ1[2]);
+    cosangle = (pDataXYZ[0] * pDataXYZ1[0] + pDataXYZ[1] * pDataXYZ1[1] + pDataXYZ[2] * pDataXYZ1[2]) / (long1 * long2);
+    if (cosangle < cos_select) success_ang = 1;
+    else success_ang = 0; 
+    printf("success_ang = %d\r\n", success_ang);
+    print1(success_ang);
+    i++;
+    ThisThread::sleep_for(1000ms);
+    if (i>10){break};
+  }
 }
 
 //double x, y;
