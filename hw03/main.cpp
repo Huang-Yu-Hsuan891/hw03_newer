@@ -100,6 +100,9 @@ void publish_message(MQTT::Client<MQTTNetwork, Countdown>* client) {
     set_confirm = 0;
     //printf("tiltangle=%d\n\r", tangle);
     char buff[100];
+    if(mode = 0)
+    sprintf(buff, "tiltangle=%d\n\r #%d", select_angle, message_num);
+    else 
     sprintf(buff, "tiltangle=%d\n\r #%d", select_angle, message_num);
     message.qos = MQTT::QOS0;
     message.retained = false;
