@@ -7,3 +7,4 @@
 # 在裡面我開了一個thread，我複製了lab8的內容，把while迴圈()，括弧裡的內容設置一個變數，當按下bottom會改變變數，while理所當然地會停下，還有把當下選到的手勢和角度放到ulcd上，這就是我gesture_ui的主要內容
 # rpc_function <tilt_angle>
 # 在裡面我也開了一個thread，先記錄平放在桌上的加速度值，接著每兩秒在記錄一次加速度的值，看這兩個夾角為多少。
+# 而在mqtt方面，開了兩個mqtt_thread，同時也開了兩個publish_message function，同時也開了兩個MQTT::Client，去分別接收兩筆資料
